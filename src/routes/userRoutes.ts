@@ -26,16 +26,16 @@ router.post('/login', login);
 router.post('/logout', isAuthenticated, logout);
 
 // POST /forgot-password
-router.post('/forgot-password', forgotPassword);
+router.post('/forgot-password', isAuthenticated, forgotPassword);
 
 // POST /reset-password
-router.post('/reset-password/:id/:resetPasswordToken', resetPassword);
+router.post('/reset-password/:id/:resetPasswordToken', isAuthenticated, resetPassword);
 
 // GET /all
-router.get('/all', getAllUsers);
+router.get('/all', isAuthenticated, getAllUsers);
 
 // GET /user/:id
-router.get('/user/:id', getUserById);
+router.get('/user/:id', isAuthenticated, getUserById);
 
 // PUT /:id
 router.put('/modify/:id', isAuthenticated, updateUserById);
