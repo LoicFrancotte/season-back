@@ -65,7 +65,7 @@ const seedDatabase = async () => {
     await clearDatabase();
     console.log('🌱 Database cleared');
 
-    const fakeUsersPromises = Array.from({ length: 10 }, () => createFakeUser());
+    const fakeUsersPromises = Array.from({ length: 500 }, () => createFakeUser());
     const fakeUsers = await Promise.all(fakeUsersPromises);
     const createdUsers = await User.insertMany(fakeUsers);
     console.log('🌱 Fake users added');
