@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 interface Post {
   _id: string;
@@ -34,7 +34,8 @@ const postSchema = new mongoose.Schema({
     default: [],
   },
   comments: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+    type: [Schema.Types.ObjectId],
+    ref: 'Comment',
     default: [],
   },
   date: {

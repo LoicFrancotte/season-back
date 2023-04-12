@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface User {
+  _id: any;
   username: string;
   name: string;
   lastname: string;
