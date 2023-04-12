@@ -71,7 +71,7 @@ const seedDatabase = async () => {
     console.log('🌱 Fake users added');
 
     const fakePosts = createdUsers.flatMap((user) => {
-      const numberOfPosts = Math.floor(Math.random() * 5) + 5;
+      const numberOfPosts = Math.floor(Math.random() * 6);
       return Array.from({ length: numberOfPosts }, () => createFakePost(user._id));
     });
 
@@ -124,13 +124,13 @@ const seedDatabase = async () => {
     };
 
     for (const post of fakePosts) {
-      const numLikes = Math.floor(Math.random() * (createdUsers.length / 2));
+      const numLikes = Math.floor(Math.random() * 11);
       const shuffledUsers = createdUsers.sort(() => 0.5 - Math.random());
       await addFakeLikes(post._id, 'post', numLikes, shuffledUsers);
     }
 
     for (const comment of fakeComments) {
-      const numLikes = Math.floor(Math.random() * (createdUsers.length / 2));
+      const numLikes = Math.floor(Math.random() * 11);
       const shuffledUsers = createdUsers.sort(() => 0.5 - Math.random());
       await addFakeLikes(comment._id, 'comment', numLikes, shuffledUsers);
     }
@@ -138,13 +138,12 @@ const seedDatabase = async () => {
     console.log('🌱 Fake likes added');
 
     const addRandomFollowings = async (user: User, users: User[], maxFollowings: number) => {
-      const numFollowings = Math.floor(Math.random() * maxFollowings) + 1;
+      const numFollowings = Math.floor(Math.random() * 10) + 1;
       const shuffledUsers = users.filter((u) => u._id !== user._id).sort(() => 0.5 - Math.random());
       const followings = shuffledUsers.slice(0, numFollowings).map((u) => u._id);
 
       await User.findByIdAndUpdate(user._id, { $push: { followings: { $each: followings } } });
 
-      // Add user to the followers list of followed users
       await Promise.all(
         followings.map((followingId) => {
           return User.findByIdAndUpdate(followingId, { $push: { followers: user._id } });
@@ -152,7 +151,6 @@ const seedDatabase = async () => {
       );
     };
 
-    // Add random followings and followers
     for (const user of createdUsers) {
       await addRandomFollowings(user, createdUsers, 10);
     }
