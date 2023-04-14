@@ -22,7 +22,7 @@ router.post('/likes/comment/:commentId', createNewLikeComment);
 router.get('/all/likes', getAllLikes);
 
 // GET /likes/:postId
-router.get('/likes/post/:postId', getLikesByPostId);
+router.get('/likes/:postId', getLikesByPostId);
 
 // GET /likes/:userId
 router.get('/likes/user/:userId', getLikesByUserId);

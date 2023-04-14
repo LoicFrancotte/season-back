@@ -27,6 +27,6 @@ router.get('/posts/users/:userId', getPostsByUserId);
 router.put('/modify/posts/:id', updatePostById);
 
 // DELETE /posts/:id
-router.delete('/posts/:id', deletePostById);
+router.delete('/delete/posts/:id', deletePostById);
 
 export default router;
