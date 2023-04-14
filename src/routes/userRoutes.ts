@@ -4,6 +4,7 @@ import {  register,
           logout,
           forgotPassword,
           resetPassword,
+          getUserByUserName,
           getAllUsers,
           getUserById,
           updateUserById,
@@ -32,6 +33,7 @@ router.post('/forgot-password', forgotPassword);
 router.post('/reset-password/:id/:resetPasswordToken', resetPassword);
 
 // GET getUserByUserName
+router.get('/user/:username', getUserByUserName);
 
 // GET /all
 router.get('/all', getAllUsers);
