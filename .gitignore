@@ -14,7 +14,6 @@ dist-ssr
 
 .env
 .env.development
-.env.*
 
 __Tests__
 jest.config.js

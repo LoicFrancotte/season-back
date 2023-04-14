@@ -36,13 +36,13 @@ export const register = async (req: Request, res: Response) => {
     }
 
     // Validation du mot de passe avec regex
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(password)) {
-      return res.status(400).json({
-        message:
-          'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number.',
-      });
-    }
+    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+    // if (!passwordRegex.test(password)) {
+    //   return res.status(400).json({
+    //     message:
+    //       'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number.',
+    //   });
+    // }
 
     // Hachage du mot de passe
     const hashedPassword = await argon2.hash(password);

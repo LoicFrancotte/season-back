@@ -31,6 +31,8 @@ router.post('/forgot-password', forgotPassword);
 // POST /reset-password
 router.post('/reset-password/:id/:resetPasswordToken', resetPassword);
 
+// GET getUserByUserName
+
 // GET /all
 router.get('/all', getAllUsers);
 
