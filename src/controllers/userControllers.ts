@@ -66,6 +66,7 @@ export const register = async (req: Request, res: Response) => {
     res.status(201).json({ message: 'New user created succesfully', token });
   } catch (error) {
     // Gestion des erreurs
+    console.error("Erreur du backend:", error); // Ajoutez cette ligne
     res.status(500).json({ message: 'Something went wrong' });
   }
 };
