@@ -17,10 +17,10 @@ router.post('/comments', createNewComment);
 router.get('/all/comments/:postId', getAllCommentByPostId);
 
 // Get /all/comments/:userId
-router.get('/all/comments/user/:userId', isAuthenticated, getAllCommentByUserId);
+router.get('/all/comments/user/:userId', getAllCommentByUserId);
 
 // PUT /comments/:id
-router.put('/modify/comments/:id', isAuthenticated, updateCommentById);
+router.put('/modify/comments/:id', updateCommentById);
 
 // DELETE /comments/:id
 router.delete('/deleted/comments/:id', deleteCommentById);
