@@ -12,29 +12,30 @@ import User from '../models/userModels';
 // Constante pour le secret JWT
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// Enregistrement d'un nouvel utilisateur
 export const register = async (req: Request, res: Response) => {
   try {
+    // Récupération des données de l'utilisateur à partir de la requête
     const { username, email, password, confirmPassword } = req.body;
-    console.error("Requête reçue:", req.body); // Ajouté
 
+    // Vérifiez que les mots de passe sont identiques
     if (password !== confirmPassword) {
       return res.status(400).json({ message: 'Passwords do not match' });
     }
 
+    // Vérification si l'utilisateur avec l'adresse e-mail existe déjà
     const existingUserByEmail = await User.findOne({ email });
-    console.error("Utilisateur existant par e-mail:", existingUserByEmail); // Ajouté
-
     if (existingUserByEmail) {
       return res.status(400).json({ message: 'User with this email already exists' });
     }
 
+    // Vérification si l'utilisateur avec le nom d'utilisateur existe déjà
     const existingUserByUsername = await User.findOne({ username });
-    console.error("Utilisateur existant par nom d'utilisateur:", existingUserByUsername); // Ajouté
-
     if (existingUserByUsername) {
       return res.status(400).json({ message: 'User with this username already exists' });
     }
 
+    // Validation du mot de passe avec regex
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
@@ -43,29 +44,32 @@ export const register = async (req: Request, res: Response) => {
       });
     }
 
+    // Hachage du mot de passe
     const hashedPassword = await argon2.hash(password);
-    console.error("Mot de passe haché:", hashedPassword); // Ajouté
 
+    // Création du nouvel utilisateur
     const newUser = new User({
       username,
       email,
       password: hashedPassword,
     });
 
+    // Sauvegarde de l'utilisateur dans la base de données
     const savedUser = await newUser.save();
-    console.error("Utilisateur enregistré:", savedUser); // Ajouté
 
+    // Création du token JWT
     const token = jwt.sign({ id: savedUser._id }, JWT_SECRET!, {
       expiresIn: '1d',
     });
 
+    // Envoi de la réponse avec le token JWT
     res.status(201).json({ message: 'New user created succesfully', token });
   } catch (error) {
-    console.error("Erreur du backend:", error);
+    // Gestion des erreurs
+    console.error("Erreur du backend:", error); // Ajoutez cette ligne
     res.status(500).json({ message: 'Something went wrong' });
   }
 };
-
 
 // Connexion d'un utilisateur existant
 export const login = async (req: Request, res: Response) => {
