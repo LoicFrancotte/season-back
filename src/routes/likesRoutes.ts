@@ -28,7 +28,7 @@ router.get('/likes/:postId', getLikesByPostId);
 router.get('/likes/user/:userId', getLikesByUserId);
 
 // GET /likes/:commentId
-router.get('/likes/comment/:commentId', getLikesByCommentId);
+router.get('/likes/:commentId', getLikesByCommentId);
 
 // DELETE /likes/:id
 router.delete('/likes/deleted/:id', deleteLikeById);

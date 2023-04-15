@@ -66,9 +66,3 @@ mongoose.connection.once('open', () => {
 });
 
 export default app;
-
-// - il faut que les utilisateurs puissent @ entre eux dans les posts et les commentaires
-// - il faut que les utilisateurs puissent mettre des hashtags dans les posts et les commentaires
-// - il faut la page de profil de l'utilisateur
-// - il faut que le bord des inputs deviennent rouge si l'username / l'email ou le password ne sont pas valides
-//   lors de l'inscription ou la connexion

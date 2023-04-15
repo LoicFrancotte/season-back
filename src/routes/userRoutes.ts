@@ -33,7 +33,7 @@ router.post('/forgot-password', forgotPassword);
 router.post('/reset-password/:id/:resetPasswordToken', resetPassword);
 
 // GET getUserByUserName
-router.get('/user/:username', getUserByUserName);
+router.get('/username/:username', getUserByUserName);
 
 // GET /all
 router.get('/all', getAllUsers);
