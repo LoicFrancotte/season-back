@@ -22,13 +22,13 @@ router.post('/likes/comment/:commentId', isAuthenticated, createNewLikeComment);
 router.get('/all/likes', getAllLikes);
 
 // GET /likes/:postId
-router.get('/likes/post/:postId', getLikesByPostId);
+router.get('/all/likes/post/:postId', getLikesByPostId);
 
 // GET /likes/:userId
-router.get('/likes/user/:userId', getLikesByUserId);
+router.get('/all/likes/user/:userId', getLikesByUserId);
 
 // GET /likes/:commentId
-router.get('/likes/comment/:commentId', getLikesByCommentId);
+router.get('/all/likes/comment/:commentId', getLikesByCommentId);
 
 // DELETE /likes/:id
 router.delete('/likes/deleted/:id', isAuthenticated, deleteLikeById);
