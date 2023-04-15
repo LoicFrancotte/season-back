@@ -11,7 +11,7 @@ import { isAuthenticated } from '../middleware/isAuthenticated';
 const router: Router = Express.Router();
 
 // POST /comments
-router.post('/comments', createNewComment);
+router.post('/comments', isAuthenticated, createNewComment);
 
 // GET /all/comments/:postId
 router.get('/all/comments/:postId', getAllCommentByPostId);
@@ -23,6 +23,6 @@ router.get('/all/comments/user/:userId', getAllCommentByUserId);
 router.put('/modify/comments/:id', updateCommentById);
 
 // DELETE /comments/:id
-router.delete('/deleted/comments/:id', deleteCommentById);
+router.delete('/deleted/comments/:id', isAuthenticated, deleteCommentById);
 
 export default router;

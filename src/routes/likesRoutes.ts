@@ -13,10 +13,10 @@ import { isAuthenticated } from '../middleware/isAuthenticated';
 const router: Router = Express.Router();
 
 // POST /likes/post/:postId
-router.post('/likes/post/:postId', createNewLikePost);
+router.post('/likes/post/:postId', isAuthenticated, createNewLikePost);
 
 // POST /likes/comment/:commentId
-router.post('/likes/comment/:commentId', createNewLikeComment);
+router.post('/likes/comment/:commentId', isAuthenticated, createNewLikeComment);
 
 // GET /all/likes
 router.get('/all/likes', getAllLikes);
@@ -31,6 +31,6 @@ router.get('/likes/user/:userId', getLikesByUserId);
 router.get('/likes/:commentId', getLikesByCommentId);
 
 // DELETE /likes/:id
-router.delete('/likes/deleted/:id', deleteLikeById);
+router.delete('/likes/deleted/:id', isAuthenticated, deleteLikeById);
 
 export default router;

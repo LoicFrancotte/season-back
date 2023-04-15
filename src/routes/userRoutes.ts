@@ -24,13 +24,13 @@ router.post('/register', register);
 router.post('/login', login);
 
 // POST /logout
-router.post('/logout', logout);
+router.post('/logout', isAuthenticated, logout);
 
 // POST /forgot-password
-router.post('/forgot-password', forgotPassword);
+router.post('/forgot-password', isAuthenticated, forgotPassword);
 
 // POST /reset-password
-router.post('/reset-password/:id/:resetPasswordToken', resetPassword);
+router.post('/reset-password/:id/:resetPasswordToken', isAuthenticated, resetPassword);
 
 // GET getUserByUserName
 router.get('/username/:username', getUserByUserName);
@@ -42,12 +42,12 @@ router.get('/all', getAllUsers);
 router.get('/user/:id', getUserById);
 
 // PUT /:id
-router.put('/modify/:id', updateUserById);
+router.put('/modify/:id', isAuthenticated, updateUserById);
 
 // PUT /profile-pic/:id
-router.put('/profile-pic/:id', upload.single('profilePic'), updateProfilePic);
+router.put('/profile-pic/:id', isAuthenticated, upload.single('profilePic'), updateProfilePic);
 
 // DELETE /:id
-router.delete('/delete/:id', deleteUserById); // doit vérifier qu'il s'agit bien de l'utilisateur connecté qui est delete et pas d'un autre
+router.delete('/delete/:id', isAuthenticated, deleteUserById); // doit vérifier qu'il s'agit bien de l'utilisateur connecté qui est delete et pas d'un autre
 
 export default router;

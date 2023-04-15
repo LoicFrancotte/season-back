@@ -12,7 +12,7 @@ import { isAuthenticated } from '../middleware/isAuthenticated';
 const router: Router = express.Router();
 
 // POST /posts
-router.post('/posts', createNewPost);
+router.post('/posts', isAuthenticated, createNewPost);
 
 // GET /posts
 router.get('/all/posts', getAllPosts);
@@ -24,9 +24,9 @@ router.get('/posts/:id', getPostById);
 router.get('/posts/users/:userId', getPostsByUserId);
 
 // PUT /posts/:id
-router.put('/modify/posts/:id', updatePostById);
+router.put('/modify/posts/:id', isAuthenticated, updatePostById);
 
 // DELETE /posts/:id
-router.delete('/delete/posts/:id', deletePostById);
+router.delete('/delete/posts/:id', isAuthenticated, deletePostById);
 
 export default router;
