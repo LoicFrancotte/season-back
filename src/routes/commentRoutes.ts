@@ -20,7 +20,7 @@ router.get('/all/comments/:postId', getAllCommentByPostId);
 router.get('/all/comments/user/:userId', getAllCommentByUserId);
 
 // PUT /comments/:id
-router.put('/modify/comments/:id', updateCommentById);
+router.put('/modify/comments/:id', isAuthenticated, updateCommentById);
 
 // DELETE /comments/:id
 router.delete('/deleted/comments/:id', isAuthenticated, deleteCommentById);
