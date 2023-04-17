@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 import Post from '../models/postModels';
 import Comment from '../models/commentModels';
 
-// Fonction qui permet de liker un post
+// Like a post
 export const toggleLikePost = async (req: Request, res: Response) => {
   try {
     const post = await Post.findById(req.params.postId);
@@ -31,7 +31,7 @@ export const toggleLikePost = async (req: Request, res: Response) => {
   }
 }
 
-// Fonction qui permet de liker un commentaire
+// Like a comment
 export const toggleLikeComment = async (req: Request, res: Response) => {
   try {
     const comment = await Comment.findById(req.params.commentId);
@@ -58,7 +58,7 @@ export const toggleLikeComment = async (req: Request, res: Response) => {
   }
 }
 
-// Fonction qui permet de récupérer tous les likes
+// Get all likes
 export const getAllLikes = async (req: Request, res: Response) => {
   try {
     const posts = await Post.find();
@@ -71,7 +71,7 @@ export const getAllLikes = async (req: Request, res: Response) => {
   }
 }
 
-// Fonction qui permet de récupérer tous les likes d'un post
+// Get all likes by post ID
 export const getLikesByPostId = async (req: Request, res: Response) => {
   try {
     const post = await Post.findById(req.params.postId);
@@ -87,7 +87,7 @@ export const getLikesByPostId = async (req: Request, res: Response) => {
   }
 }
 
-// Fonction qui permet de récupérer tous les likes d'un commentaire
+// Get all likes by comment ID
 export const getLikesByCommentId = async (req: Request, res: Response) => {
   try {
     const comment = await Comment.findById(req.params.commentId);

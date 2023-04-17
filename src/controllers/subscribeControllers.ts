@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 
 import User from '../models/userModels';
 
-// Follow / unfollow un utilisateur
+// Follow / unfollow a user
 export const toggleFollowUser = async (req: Request, res: Response) => {
   try {
     const userToFollow = await User.findById(req.params.userId);
@@ -38,7 +38,7 @@ export const toggleFollowUser = async (req: Request, res: Response) => {
   }
 };
 
-// Récupère tous les followers / followings d'un utilisateur
+// Get all followers and followings of a user
 export const getUserFollowersAndFollowings = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;

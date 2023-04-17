@@ -24,11 +24,6 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
-// console.log('DB_URL', process.env.DB_URL);
-// console.log('ENVIRONMENT', process.env.ENVIRONMENT);
-// console.log('FRONTEND_URL', process.env.FRONTEND_URL);
-// console.log('BACKEND_URL', process.env.BACKEND_URL);
-
 const app = express();
 
 app.use(express.json());

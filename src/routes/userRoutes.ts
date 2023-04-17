@@ -17,37 +17,26 @@ import { isAuthenticated } from '../middleware/isAuthenticated';
 
 const router: Router = express.Router();
 
-// POST /register 
 router.post('/register', register);
 
-// POST /login
 router.post('/login', login);
 
-// POST /logout
 router.post('/logout', isAuthenticated, logout);
 
-// POST /forgot-password
 router.post('/forgot-password', forgotPassword);
 
-// POST /reset-password
 router.post('/reset-password/:resetPasswordToken', resetPassword);
 
-// GET getUserByUserName
 router.get('/username/:username', getUserByUserName);
 
-// GET /all
 router.get('/all', getAllUsers);
 
-// GET /user/:id
 router.get('/user/:id', getUserById);
 
-// PUT /:id
 router.put('/modify/:id', isAuthenticated, updateUserById);
 
-// PUT /profile-pic/:id
 router.put('/profile-pic/:id', isAuthenticated, upload.single('profilePic'), updateProfilePic);
 
-// DELETE /:id
-router.delete('/delete/:id', isAuthenticated, deleteUserById); // doit vérifier qu'il s'agit bien de l'utilisateur connecté qui est delete et pas d'un autre
+router.delete('/delete/:id', isAuthenticated, deleteUserById); 
 
 export default router;

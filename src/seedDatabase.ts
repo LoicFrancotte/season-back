@@ -19,6 +19,7 @@ const clearDatabase = async () => {
   await Comment.deleteMany({});
 };
 
+// Create fake user
 const createFakeUser = async () => {
   const hashedPassword = await argon2.hash(faker.internet.password());
 
@@ -111,16 +112,6 @@ const seedDatabase = async () => {
       } else if (entityType === 'comment') {
         await Comment.findByIdAndUpdate(entityId, { $push: { likes: { $each: likes } } });
       }
-      // Add likes to users
-      await Promise.all(
-        likes.map((userId) => {
-          if (entityType === 'post') {
-            return User.findByIdAndUpdate(userId, { $push: { postLikes: entityId } });
-          } else {
-            return User.findByIdAndUpdate(userId, { $push: { commentLikes: entityId } });
-          }
-        })
-      );
     };
 
     for (const post of fakePosts) {
@@ -159,6 +150,7 @@ const seedDatabase = async () => {
 
     console.log('🌱 Database successfully populated!');
     mongoose.connection.close();
+
   } catch (error) {
     console.error('Error when populating the database:', error);
     mongoose.connection.close();

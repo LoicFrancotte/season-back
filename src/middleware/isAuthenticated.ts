@@ -6,6 +6,7 @@ import '../types'
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
+// Middleware to check if user is authenticated
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization')?.split(' ')[1];
 

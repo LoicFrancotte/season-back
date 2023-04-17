@@ -16,7 +16,6 @@ interface User {
   resetPasswordExpires?: Date;
 }
 
-// Créer un type personnalisé qui étend Document et inclut l'interface User
 type UserDocument = User & Document;
 
 const userSchema = new mongoose.Schema({
@@ -76,7 +75,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Utilisez le type personnalisé pour définir le modèle
 const User = mongoose.model<UserDocument>('User', userSchema);
 
 export default User;

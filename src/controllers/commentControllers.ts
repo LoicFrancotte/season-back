@@ -4,7 +4,7 @@ import Post from '../models/postModels';
 import Comment from '../models/commentModels';
 import User from '../models/userModels';
 
-// Crée un nouveau commentaire
+// Create a new comment
 export const createNewComment = async (req: Request, res: Response) => {
   const text = req.body.text;
   const postId = req.params.postId;
@@ -19,10 +19,8 @@ export const createNewComment = async (req: Request, res: Response) => {
 
     const savedComment = await newComment.save();
 
-    // Ajouter le commentaire au modèle User
     await User.updateOne({ _id: userId }, { $push: { comments: savedComment._id } });
 
-    // Ajouter le commentaire au modèle Post
     await Post.updateOne({ _id: postId }, { $push: { comments: savedComment._id } });
 
     res.status(201).json(savedComment);
@@ -32,7 +30,7 @@ export const createNewComment = async (req: Request, res: Response) => {
   }
 };
 
-// Récupère tous les commentaires d'un post
+// Get all comments
 export const getAllCommentByPostId = async (req: Request, res: Response) => {
   const postId = req.params.postId;
 
@@ -56,7 +54,7 @@ export const getAllCommentByPostId = async (req: Request, res: Response) => {
   }
 };
 
-// Récupère tous les commentaires d'un utilisateur
+// Get all comments by user ID
 export const getAllCommentByUserId = async (req: Request, res: Response) => {
   const userId = req.params.userId;
 
@@ -80,7 +78,7 @@ export const getAllCommentByUserId = async (req: Request, res: Response) => {
   }
 };
 
-// Met à jour un commentaire par son ID
+// Update a comment by ID
 export const updateCommentById = async (req: Request, res: Response) => {
   const commentId = req.params.id;
   const { text } = req.body;
@@ -111,7 +109,7 @@ export const updateCommentById = async (req: Request, res: Response) => {
   }
 };
 
-// Supprime un commentaire par son ID
+// Delete a comment by ID
 export const deleteCommentById = async (req: Request, res: Response) => {
   const commentId = req.params.id;
 
@@ -126,17 +124,14 @@ export const deleteCommentById = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    // Supprimez le commentaire de la collection Comment
     await Comment.findByIdAndDelete(commentId);
 
-    // Trouvez l'utilisateur associé au commentaire et mettez à jour son tableau de commentaires
     const user = await User.findById(comment.userId);
     if (user) {
       user.comments = user.comments?.filter(id => id.toString() !== commentId);
       await user.save();
     }
 
-    // Trouvez le post associé au commentaire et mettez à jour son tableau de commentaires
     const post = await Post.findById(comment.postId);
     if (post) {
       post.comments = post.comments.filter(id => id.toString() !== commentId);
