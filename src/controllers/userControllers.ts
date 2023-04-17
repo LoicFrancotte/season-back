@@ -158,8 +158,10 @@ export const forgotPassword = async (req: Request, res: Response) => {
     await user.save();
 
     // Construction des URL de réinitialisation de mot de passe pour les environnements de production et de développement
-    const resetUrl = `http://${process.env.NAME_DOMAIN}/reset-password/${user._id}/${token}`;
+    const resetUrl = `http://${process.env.BACKEND_URL}/reset-password/${user._id}/${token}`;
     const resetUrl2 = `${process.env.LOCAL_URL}/reset-password/${user._id}/${token}`;
+    console.log('resetUrl:', resetUrl);
+    console.log('resetUrl2:', resetUrl2);
     
     // Création d'un objet de message pour l'email avec des informations telles que l'adresse email de l'utilisateur, l'objet de l'email, le texte et le HTML du corps de l'email, et l'URL de désabonnement
     const msg = {
