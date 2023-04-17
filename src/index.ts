@@ -44,15 +44,7 @@ app.use(
   }),
 );
 
-// Serve your Swagger UI HTML file
-app.get('/api-docs', (req, res) => {
-  res.sendFile(path.join(__dirname, 'swagger.html'));
-});
-
-// Serve your Swagger YAML or JSON file
-app.get('/path/to/your/swagger.yaml', (req, res) => {
-  res.sendFile(path.join(__dirname, 'swagger.yaml')); // Change this to the path of your Swagger YAML or JSON file
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT: number = Number(process.env.PORT);
 

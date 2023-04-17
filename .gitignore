@@ -15,8 +15,6 @@ dist-ssr
 .env
 .env.development
 
-openapi.yaml
-
 __Tests__
 jest.config.js
 

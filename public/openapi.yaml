@@ -1,0 +1,1658 @@
+openapi: 3.0.0
+info:
+  title: Season API
+  version: 1.0.0
+  description: Season API
+servers:
+  - url: https://season-app-hbxam.ondigitalocean.app
+    description: Online API server
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        profilePic:
+          type: string
+        followers:
+          type: array
+          items:
+            type: string
+        followings:
+          type: array
+          items:
+            type: string
+        posts:
+          type: array
+          items:
+            type: string
+        comments:
+          type: array
+          items:
+            type: string
+        resetPasswordToken:
+          type: string
+        resetPasswordExpires:
+          type: string
+          format: date-time
+      required:
+        - _id
+        - username
+        - email
+        - password
+
+    Post:
+      type: object
+      properties:
+        _id:
+          type: string
+        userId:
+          type: string
+        text:
+          type: string
+        img:
+          type: string
+        video:
+          type: string
+        likes:
+          type: array
+          items:
+            type: string
+        comments:
+          type: array
+          items:
+            type: string
+        date:
+          type: string
+          format: date-time
+      required:
+        - _id
+        - userId
+        - text
+
+    Comment:
+      type: object
+      properties:
+        _id:
+          type: string
+        userId:
+          type: string
+        postId:
+          type: string
+        text:
+          type: string
+        likes:
+          type: array
+          items:
+            type: string
+        date:
+          type: string
+          format: date-time
+      required:
+        - _id
+        - userId
+        - postId
+        - text
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+paths:
+  /register:
+    post:
+      summary: Register a user
+      description: Creates a new user and returns a success message and an access token.
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The username
+                email:
+                  type: string
+                  format: email
+                  description: The user's email address
+                password:
+                  type: string
+                  description: The user's password
+                confirmPassword:
+                  type: string
+                  description: Confirmation of the user's password
+              required:
+                - username
+                - email
+                - password
+                - confirmPassword
+      responses:
+        201:
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    description: Success message
+                  token:
+                    type: string
+                    description: The user's access token
+        400:
+          description: User creation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /login:
+    post:
+      summary: Log in an existing user
+      description: Authenticates an existing user and returns a success message and an access token.
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The username
+                password:
+                  type: string
+                  description: The user's password
+              required:
+                - username
+                - password
+      responses:
+        200:
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+                  token:
+                    type: string
+                    description: The user's access token
+        400:
+          description: Invalid password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /logout:
+    post:
+      summary: Log out a user
+      description: Logs out a user and returns a success message.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: User logged out successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: User not logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /forgot-password:
+    post:
+      summary: Request a password reset
+      description: Sends a password reset email to the user if their email exists in the database.
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: The email address of the user requesting a password reset.
+      responses:
+        200:
+          description: Password reset email sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Email is required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error or something went wrong
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /reset-password/{resetPasswordToken}:
+    post:
+      summary: Reset the user's password
+      description: Resets the user's password if the provided reset password token is valid and the new passwords meet the requirements.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: resetPasswordToken
+          schema:
+            type: string
+          required: true
+          description: The password reset token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newPassword:
+                  type: string
+                  description: The new password
+                confirmNewPassword:
+                  type: string
+                  description: The new password confirmation
+      responses:
+        200:
+          description: Password reset successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+                  token:
+                    type: string
+                    description: The JWT token
+        400:
+          description: Invalid reset password token or passwords do not meet requirements
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /username/{username}:
+    get:
+      summary: Get a user by their username
+      description: Retrieves a user's information by their username.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+          description: The user's username
+      responses:
+        200:
+          description: User found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: The user's ID
+                  username:
+                    type: string
+                    description: The user's username
+                  email:
+                    type: string
+                    description: The user's email
+                  password:
+                    type: string
+                    description: The user's hashed password
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: The date the user was created
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    description: The date the user was last updated
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /all:
+    get:
+      summary: Get all users
+      description: Retrieves a list of all users.
+      tags:
+        - Users
+      responses:
+        200:
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      description: The user's ID
+                    username:
+                      type: string
+                      description: The user's username
+                    email:
+                      type: string
+                      description: The user's email
+                    password:
+                      type: string
+                      description: The user's hashed password
+                    createdAt:
+                      type: string
+                      format: date-time
+                      description: The date the user was created
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      description: The date the user was last updated
+        500:
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /user/{id}:
+    get:
+      summary: Get user by ID
+      description: Retrieves a user by their ID.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The user's ID
+      responses:
+        200:
+          description: User data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: The user's ID
+                  username:
+                    type: string
+                    description: The user's username
+                  email:
+                    type: string
+                    description: The user's email
+                  password:
+                    type: string
+                    description: The user's hashed password
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: The date the user was created
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    description: The date the user was last updated
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /modify/{id}:
+    put:
+      summary: Update user by ID
+      description: Updates a user's information by their ID.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The user's ID
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The new username
+                name:
+                  type: string
+                  description: The new first name
+                lastname:
+                  type: string
+                  description: The new last name
+                email:
+                  type: string
+                  description: The new email
+                password:
+                  type: string
+                  description: The new password
+                confirmNewPassword:
+                  type: string
+                  description: The new password confirmation
+      responses:
+        200:
+          description: User updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: The user's ID
+                  username:
+                    type: string
+                    description: The user's username
+                  name:
+                    type: string
+                    description: The user's first name
+                  lastname:
+                    type: string
+                    description: The user's last name
+                  email:
+                    type: string
+                    description: The user's email
+                  password:
+                    type: string
+                    description: The user's hashed password
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: The date the user was created
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    description: The date the user was last updated
+        400:
+          description: Passwords do not match or new password does not meet requirements
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /profile-pic/{id}:
+    put:
+      summary: Update user's profile picture
+      description: Updates a user's profile picture by their ID.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The user's ID
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                profilePic:
+                  type: string
+                  format: binary
+                  description: The new profile picture file
+      responses:
+        200:
+          description: Profile picture updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success description
+        400:
+          description: No profile picture provided
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /delete/{id}:
+    delete:
+      summary: Delete a user by ID
+      description: This endpoint allows you to delete a user by their ID.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The ID of the user to delete
+      responses:
+        200:
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User deleted successfully
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found
+        500:
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Something went wrong
+  /posts:
+    post:
+      summary: Create a new post
+      description: This endpoint allows you to create a new post.
+      tags:
+        - Posts
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: The text content of the post
+                img:
+                  type: string
+                  description: The image URL of the post (optional)
+                video:
+                  type: string
+                  description: The video URL of the post (optional)
+      responses:
+        201:
+          description: Post created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  savedPost:
+                    $ref: '#/components/schemas/Post'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found
+        500:
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Something went wrong
+                  error:
+                    type: string
+                    example: Error message
+  /all/posts:
+    get:
+      summary: Retrieve all posts
+      description: Fetches all posts from the database, including the related user information.
+      tags:
+        - Posts
+      responses:
+        200:
+          description: A list of all posts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /posts/{id}:
+    get:
+      summary: Retrieve a post by its ID
+      description: Fetches a single post from the database using the provided ID, including the related user information.
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The ID of the post to retrieve
+      responses:
+        200:
+          description: The post with the specified ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /posts/users/{userId}:
+    get:
+      summary: Retrieve all posts by a user
+      description: Fetches all the posts from the database for a specific user using the provided user ID.
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The ID of the user whose posts to retrieve
+      responses:
+        200:
+          description: The list of posts for the specified user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /modify/posts/{id}:
+    put:
+      summary: Update a post by its ID
+      description: Updates a specific post with new data, such as text, image, or video, using the provided post ID.
+      tags:
+        - Posts
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The ID of the post to update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: The updated post text
+                img:
+                  type: string
+                  description: The updated post image
+                video:
+                  type: string
+                  description: The updated post video
+      responses:
+        200:
+          description: The updated post
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+        404:
+          description: Post not found or unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /delete/posts/{id}:
+    delete:
+      summary: Delete a post by its ID
+      description: Deletes a specific post using the provided post ID and updates the user's posts accordingly.
+      tags:
+        - Posts
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The ID of the post to delete
+      responses:
+        200:
+          description: Post deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation message
+        404:
+          description: Post not found or unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /comments/{postId}:
+    post:
+      summary: Create a new comment
+      description: Creates a new comment and adds it to the User and Post models.
+      tags:
+        - Comments
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: postId
+          schema:
+            type: string
+            format: ObjectId
+          required: true
+          description: The ID of the post the comment is associated with
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: The content of the comment
+              required:
+                - text
+      responses:
+        201:
+          description: Comment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    format: ObjectId
+                    description: The ID of the created comment
+                  userId:
+                    type: string
+                    format: ObjectId
+                    description: The ID of the user who created the comment
+                  postId:
+                    type: string
+                    format: ObjectId
+                    description: The ID of the post the comment is associated with
+                  text:
+                    type: string
+                    description: The content of the comment
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /all/comments/{postId}:
+    get:
+      summary: Get all comments for a post
+      description: Retrieves all comments associated with the specified post ID.
+      tags:
+        - Comments
+      parameters:
+        - name: postId
+          in: path
+          description: The ID of the post to retrieve comments for
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        200:
+          description: List of comments retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      format: ObjectId
+                      description: The ID of the comment
+                    userId:
+                      type: string
+                      format: ObjectId
+                      description: The ID of the user who created the comment
+                    postId:
+                      type: string
+                      format: ObjectId
+                      description: The ID of the post the comment is associated with
+                    text:
+                      type: string
+                      description: The content of the comment
+        400:
+          description: Bad request - Post ID is required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        404:
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /all/comments/user/{userId}:
+    get:
+      summary: Get all comments by a user
+      description: Retrieves all comments created by the specified user ID.
+      tags:
+        - Comments
+      parameters:
+        - name: userId
+          in: path
+          description: The ID of the user to retrieve comments for
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        200:
+          description: List of comments retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      format: ObjectId
+                      description: The ID of the comment
+                    userId:
+                      type: string
+                      format: ObjectId
+                      description: The ID of the user who created the comment
+                    postId:
+                      type: string
+                      format: ObjectId
+                      description: The ID of the post the comment is associated with
+                    text:
+                      type: string
+                      description: The content of the comment
+        400:
+          description: Bad request - User ID is required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /modify/comments/{id}:
+    put:
+      summary: Update a comment by its ID
+      description: Updates the content of the specified comment ID.
+      tags:
+        - Comments
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the comment to update
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: The updated content of the comment
+              required:
+                - text
+      responses:
+        200:
+          description: Comment updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    format: ObjectId
+                    description: The ID of the updated comment
+                  userId:
+                    type: string
+                    format: ObjectId
+                    description: The ID of the user who created the comment
+                  postId:
+                    type: string
+                    format: ObjectId
+                    description: The ID of the post the comment is associated with
+                  text:
+                    type: string
+                    description: The updated content of the comment
+        400:
+          description: Bad request - Comment ID or text is required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        404:
+          description: Comment not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /deleted/comments/{id}:
+    delete:
+      summary: Delete a comment by its ID
+      description: Deletes the specified comment and updates the associated user and post.
+      tags:
+        - Comments
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the comment to delete
+          required: true
+          schema:
+            type: string
+            format: ObjectId
+      responses:
+        200:
+          description: Comment deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        400:
+          description: Bad request - Comment ID is required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        404:
+          description: Comment not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /post/like/{postId}:
+    patch:
+      summary: Toggle like on a post
+      description: Allows the authenticated user to like or unlike a post by its ID.
+      tags:
+        - Likes
+      parameters:
+        - in: path
+          name: postId
+          schema:
+            type: string
+            format: ObjectId
+          required: true
+          description: The ID of the post to like or unlike
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: Like toggled successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        404:
+          description: Post not found or invalid user ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+        500:
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error description
+  /comment/like/{commentId}:
+    patch:
+      summary: Toggle like for a comment
+      description: Allows authenticated users to like or unlike a comment.
+      tags:
+        - Likes
+      parameters:
+        - in: path
+          name: commentId
+          schema:
+            type: string
+            format: ObjectId
+          required: true
+          description: The ID of the comment to like or unlike.
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: Successfully liked or unliked the comment.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A message indicating whether the comment was liked or unliked.
+        404:
+          description: Comment or user ID not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message indicating the reason for the error.
+        500:
+          description: Something went wrong.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message indicating a server-side error.
+  /all/likes:
+    get:
+      summary: Retrieve all likes
+      description: Get all the likes for both posts and comments.
+      tags:
+        - Likes
+      responses:
+        200:
+          description: Successfully retrieved all likes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+                  comments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comment'
+        500:
+          description: Something went wrong.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message indicating a server-side error.
+  /all/likes/post/{postId}:
+    get:
+      tags:
+        - Likes
+      summary: Get all likes of a post by post ID
+      description: Retrieve all likes associated with a specific post by providing the post ID
+      operationId: getLikesByPostId
+      parameters:
+        - name: postId
+          in: path
+          description: ID of the post to get likes for
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    $ref: '#/components/schemas/Post'
+        404:
+          description: Post not found
+        500:
+          description: Something went wrong
+  /all/likes/comment/{commentId}:
+    get:
+      tags:
+        - Likes
+      summary: Get all likes of a comment by comment ID
+      description: Retrieve all likes associated with a specific comment by providing the comment ID
+      operationId: getLikesByCommentId
+      parameters:
+        - name: commentId
+          in: path
+          description: ID of the comment to get likes for
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  comment:
+                    $ref: '#/components/schemas/Comment'
+        404:
+          description: Comment not found
+        500:
+          description: Something went wrong
+  /user/follow/{userId}:
+    patch:
+      tags:
+        - Subscribes
+      summary: Follow or unfollow a user
+      description: Toggle the follow status for a specific user by providing their user ID
+      operationId: toggleFollowUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user to follow or unfollow
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        404:
+          description: User not found
+        500:
+          description: Error following user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  error:
+                    type: string
+  /all/followers/{userId}:
+    get:
+      tags:
+        - Subscribes
+      summary: Retrieve all followers and followings of a user
+      description: This endpoint retrieves the list of followers and followings for the specified user.
+      operationId: getUserFollowersAndFollowings
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The ID of the user whose followers and followings will be retrieved
+      responses:
+        200:
+          description: Successfully retrieved the followers and followings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  followers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  followings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error retrieving user followers and followings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
