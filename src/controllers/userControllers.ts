@@ -108,8 +108,6 @@ export const logout = async (req: Request, res: Response) => {
     // Récupération de l'utilisateur à partir de la requête
     const user = req.user;
 
-    console.log('User:', user); // Ajoutez ce journal de débogage
-
     // Vérifie si l'utilisateur est connecté
     if (!user) {
       return res.status(400).json({ message: 'User not logged in' });
@@ -145,7 +143,6 @@ export const forgotPassword = async (req: Request, res: Response) => {
     
     // Recherche de l'utilisateur dans la base de données en utilisant son adresse email
     const user = await User.findOne({ email: req.body.email });
-    console.log('user:', user);
 
     // Si aucun utilisateur n'est trouvé avec cette adresse email, renvoyer une réponse avec un message d'erreur
     if (!user) {
@@ -163,8 +160,6 @@ export const forgotPassword = async (req: Request, res: Response) => {
     // Construction des URL de réinitialisation de mot de passe pour les environnements de production et de développement
     const resetUrl = `http://${process.env.NAME_DOMAIN}/reset-password/${user._id}/${token}`;
     const resetUrl2 = `${process.env.LOCAL_URL}/reset-password/${user._id}/${token}`;
-    console.log(resetUrl);
-    console.log(resetUrl2); 
     
     // Création d'un objet de message pour l'email avec des informations telles que l'adresse email de l'utilisateur, l'objet de l'email, le texte et le HTML du corps de l'email, et l'URL de désabonnement
     const msg = {
