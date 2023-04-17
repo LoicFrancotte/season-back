@@ -4,6 +4,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import session from 'express-session';
+import fs from 'fs';
 
 import userRoutes from './routes/userRoutes';
 import postRoutes from './routes/postRoutes';
@@ -44,8 +45,17 @@ app.use(
   }),
 );
 
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.get('/swagger.html', (req, res) => {
+  const swaggerFilePath = path.join(__dirname, 'public', 'swagger.html');
+  fs.readFile(swaggerFilePath, (err, data) => {
+    if (err) {
+      res.status(500).send('Error loading swagger.html');
+    } else {
+      res.setHeader('Content-Type', 'text/html');
+      res.send(data);
+    }
+  });
+});
 const PORT: number = Number(process.env.PORT);
 
 mongoose.connect(process.env.DB_URL!);
