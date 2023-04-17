@@ -6,13 +6,15 @@ import User from '../models/userModels';
 
 // Crée un nouveau commentaire
 export const createNewComment = async (req: Request, res: Response) => {
-  const { userId, postId, text } = req.body;
+  const text = req.body.text;
+  const postId = req.params.postId;
+  const userId = req.user.id;
 
   try {
     const newComment = new Comment({
-      userId,
-      postId,
       text,
+      postId,
+      userId,
     });
 
     const savedComment = await newComment.save();

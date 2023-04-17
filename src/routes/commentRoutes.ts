@@ -10,8 +10,8 @@ import { isAuthenticated } from '../middleware/isAuthenticated';
 
 const router: Router = Express.Router();
 
-// POST /comments
-router.post('/comments', isAuthenticated, createNewComment);
+// POST /comments/:postId
+router.post('/comments/:postId', isAuthenticated, createNewComment);
 
 // GET /all/comments/:postId
 router.get('/all/comments/:postId', getAllCommentByPostId);

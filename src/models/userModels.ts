@@ -12,8 +12,6 @@ interface User {
   followings?: Schema.Types.ObjectId[];
   posts?: Schema.Types.ObjectId[];
   comments?: Schema.Types.ObjectId[];
-  postLikes?: string[];
-  commentLikes?: string[];
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
 }
@@ -65,16 +63,6 @@ const userSchema = new mongoose.Schema({
   },
   comments: {
     type: [Schema.Types.ObjectId],
-    ref: 'Comment',
-    default: [],
-  },
-  postLikes: {
-    type: [String],
-    ref: 'Post',
-    default: [],
-  },
-  commentLikes: {
-    type: [String],
     ref: 'Comment',
     default: [],
   },
