@@ -45,17 +45,16 @@ app.use(
   }),
 );
 
-app.get('/swagger.html', (req, res) => {
-  const swaggerFilePath = path.join(__dirname, 'public', 'swagger.html');
-  fs.readFile(swaggerFilePath, (err, data) => {
-    if (err) {
-      res.status(500).send('Error loading swagger.html');
-    } else {
-      res.setHeader('Content-Type', 'text/html');
-      res.send(data);
-    }
-  });
+app.get('/swagger', (req, res) => {
+  const swaggerHtmlPath = path.join(__dirname, 'public', 'swagger.html');
+  res.sendFile(swaggerHtmlPath);
 });
+
+app.get('/openapi.yaml', (req, res) => {
+  const openApiYamlPath = path.join(__dirname, 'public', 'openapi.yaml');
+  res.sendFile(openApiYamlPath);
+});
+
 const PORT: number = Number(process.env.PORT);
 
 mongoose.connect(process.env.DB_URL!);
