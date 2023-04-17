@@ -27,10 +27,10 @@ router.post('/login', login);
 router.post('/logout', isAuthenticated, logout);
 
 // POST /forgot-password
-router.post('/forgot-password', isAuthenticated, forgotPassword);
+router.post('/forgot-password', forgotPassword);
 
 // POST /reset-password
-router.post('/reset-password/:id/:resetPasswordToken', isAuthenticated, resetPassword);
+router.post('/reset-password/:id/:resetPasswordToken', resetPassword);
 
 // GET getUserByUserName
 router.get('/username/:username', getUserByUserName);

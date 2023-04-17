@@ -31,15 +31,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express();
 
-// Configurer les options CORS
-const corsOptions = {
-  origin: 'https://editor.swagger.io',
-  credentials: true,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-};
-
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use('/', userRoutes);
 app.use('/', postRoutes);
