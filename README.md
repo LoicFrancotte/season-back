@@ -55,7 +55,7 @@ After starting the server, the API will be accessible at `http://localhost:PORT`
 
 ## Database Schema
 
-![Database Schema](https://imgur.com/ZXtXfYw)
+![Database Schema](https://i.imgur.com/ZXtXfYw.png)
 
 ## Live Application
 
