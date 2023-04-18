@@ -40,13 +40,13 @@ This project is the backend of a Twitter-like application, developed with Node.j
 
 1. Clone this repository:
 
-- npm install
+- `npm install`
 
 2. Copy the `.env.example` file as `.env` and configure the environment variables according to your needs.
 
 3. Start the server:
 
-- npm run dev 
+- `npm run dev` 
 
 
 ## Usage
@@ -55,7 +55,7 @@ After starting the server, the API will be accessible at `http://localhost:PORT`
 
 ## Database Schema
 
-![Database Schema](https://postimg.cc/MnNkXHBr)
+![Database Schema](https://imgur.com/ZXtXfYw)
 
 ## Live Application
 
