@@ -7,7 +7,7 @@ This project is the backend of a Twitter-like application, developed with Node.j
 - [Features](#features)
 - [Technologies](#technologies)
 - [Installation](#installation)
-- [Usage](#usage)
+- [Populating the Database with Fake Data](#populating-the-database-with-fake-data)
 - [Database Schema](#database-schema)
 - [Live Application](#live-application)
 - [Frontend Repository](#frontend-repository)
@@ -32,30 +32,43 @@ This project is the backend of a Twitter-like application, developed with Node.j
 - MongoDB
 - Swagger for API documentation
 - MailgunJS for sending password reset emails
-- faker.js for generating fake data
+- Faker.js for generating fake data
 - Multer for handling profile picture uploads
 
 
 ## Installation
 
-1. Clone this repository:
+1. Clone this repository
+
+2. Install dependencies:
 
 - `npm install`
 
-2. Copy the `.env.example` file as `.env` and configure the environment variables according to your needs.
+3. Copy the `.env.example` file as `.env` and configure the environment variables according to your needs.
 
-3. Start the server:
+4. Start the server:
 
-- `npm run dev` 
+- `npm run dev`
 
+## Populating the Database with Fake Data
 
-## Usage
+To populate the database with fake data using the `faker.js` script, follow these steps:
 
-After starting the server, the API will be accessible at `http://localhost:PORT` (replace `PORT` with the port configured in your `.env` file).
+1. Build the project:
+
+- `npm run build`
+
+2. Navigate to the `dist` directory:
+
+- `cd dist`
+
+3. Run the `seedDatabase.js` script:
+
+- `node seedDatabase.js`
 
 ## Database Schema
 
-![Database Schema](https://i.imgur.com/ZXtXfYw.png)
+![Database Schema](https://i.imgur.com/seVmKle.png)
 
 ## Live Application
 
