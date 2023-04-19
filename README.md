@@ -1,17 +1,47 @@
 # Season App Project - API
 
-This project is the backend of a Twitter-like application, developed with Node.js, Express, and TypeScript. This is my first real API that I've built, and it comes with Swagger documentation. Below you will find all the necessary information to understand and use this API.
+This project is the backend of a Twitter-like application, developed with Node.js, Express, TypeScript, and MongoDB. It comes with Swagger documentation to help you understand and use the API effectively. Below you will find all the necessary information to get started with this API.
+
+## Database Schema
+
+![Database Schema](https://i.imgur.com/seVmKle.png)
 
 ## Table of Contents
 
+- [Documentation](#documentation)
+- [Live Application](#live-application)
+- [Frontend Repository](#frontend-repository)
 - [Features](#features)
 - [Technologies](#technologies)
 - [Installation](#installation)
 - [Populating the Database with Fake Data](#populating-the-database-with-fake-data)
-- [Database Schema](#database-schema)
 - [Live Application](#live-application)
 - [Frontend Repository](#frontend-repository)
-- [Documentation](#documentation)
+
+## Documentation
+
+The Swagger documentation for this API is available at the following address: 
+[Swagger Documentation](https://season-app-hbxam.ondigitalocean.app/swagger)
+
+To test all the routes in the API, you need an access token. Follow these steps to obtain one:
+
+1. Create an account using the `/register` route.
+2. After successful registration, you will receive an access token.
+3. In Swagger, click on the `Authorize` button at the top right of the page.
+4. Paste your access token in the `value` field and click `Authorize`.
+5. You can now test all the routes in the API with your authorized token.
+
+Note: The access token may expire after a certain period of time. If that happens, you will need to log in again using the `/login` route to obtain a new token.
+
+## Live Application
+
+You can try the live application at the following address:
+[Incoming]()
+
+## Frontend Repository
+
+The frontend source code is located in the following repository: 
+[Frontend Repository](https://github.com/Onllsan/Season)
 
 ## Features
 
@@ -65,22 +95,3 @@ To populate the database with fake data using the `faker.js` script, follow thes
 3. Run the `seedDatabase.js` script:
 
 - `node seedDatabase.js`
-
-## Database Schema
-
-![Database Schema](https://i.imgur.com/seVmKle.png)
-
-## Live Application
-
-You can try the live application at the following address:
-[Incoming]()
-
-## Frontend Repository
-
-The frontend source code is located in the following repository: 
-[Frontend Repository](https://github.com/Onllsan/Season)
-
-## Documentation
-
-The Swagger documentation for this API is available at the following address: 
-[Swagger Documentation](https://season-app-hbxam.ondigitalocean.app/swagger)
