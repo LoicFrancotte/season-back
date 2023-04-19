@@ -21,6 +21,7 @@ This project is the backend of a Twitter-like application, developed with Node.j
 ## Documentation
 
 The Swagger documentation for this API is available at the following address: 
+
 [Swagger Documentation](https://season-app-hbxam.ondigitalocean.app/swagger)
 
 To test all the routes in the API, you need an access token. Follow these steps to obtain one:
