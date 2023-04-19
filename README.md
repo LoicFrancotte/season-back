@@ -15,8 +15,6 @@ This project is the backend of a Twitter-like application, developed with Node.j
 - [Technologies](#technologies)
 - [Installation](#installation)
 - [Populating the Database with Fake Data](#populating-the-database-with-fake-data)
-- [Live Application](#live-application)
-- [Frontend Repository](#frontend-repository)
 
 ## Documentation
 
