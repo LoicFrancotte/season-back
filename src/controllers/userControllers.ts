@@ -53,7 +53,7 @@ export const register = async (req: Request, res: Response) => {
       expiresIn: '1d',
     });
 
-    res.status(201).json({ message: 'New user created succesfully', token: { token: token } });
+    res.status(201).json({ message: 'New user created succesfully', token });
   } catch (error) {
     console.error("Erreur du backend:", error);
     res.status(500).json({ message: 'Something went wrong' });
@@ -79,7 +79,7 @@ export const login = async (req: Request, res: Response) => {
       expiresIn: '1d',
     });
 
-    res.status(200).json({ message: 'User Logged In', token: { token: token } });
+    res.status(200).json({ message: 'User Logged In', token });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong' });
   }
@@ -197,7 +197,7 @@ export const resetPassword = async (req: Request, res: Response) => {
       expiresIn: '1d',
     });
 
-    res.status(200).json({ message: 'Password reset successfully', token: { token: token } });
+    res.status(200).json({ message: 'Password reset successfully', token });
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong' });
   }
