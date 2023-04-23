@@ -87,6 +87,24 @@ export const getLikesByPostId = async (req: Request, res: Response) => {
   }
 }
 
+// Get all liked posts by user ID
+export const getLikedPostsByUserId = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    // Trouver tous les posts
+    const allPosts = await Post.find();
+
+    // Filtrer les posts aimés par l'utilisateur
+    const likedPosts = allPosts.filter((post) => post.likes.includes(userId));
+
+    res.status(200).json({ posts: likedPosts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 // Get all likes by comment ID
 export const getLikesByCommentId = async (req: Request, res: Response) => {
   try {

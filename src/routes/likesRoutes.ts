@@ -4,6 +4,7 @@ import {  toggleLikePost,
           toggleLikeComment,
           getAllLikes,
           getLikesByPostId,
+          getLikedPostsByUserId,
           getLikesByCommentId,
         } from '../controllers/likesControllers';
 import { isAuthenticated } from '../middleware/isAuthenticated';
@@ -17,6 +18,8 @@ router.patch('/comment/like/:commentId', isAuthenticated, toggleLikeComment);
 router.get('/all/likes', getAllLikes);
 
 router.get('/all/likes/post/:postId', getLikesByPostId);
+
+router.get('/all/likes/user/:userId', getLikedPostsByUserId);
 
 router.get('/all/likes/comment/:commentId', getLikesByCommentId);
 
