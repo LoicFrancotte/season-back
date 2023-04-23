@@ -53,7 +53,7 @@ export const register = async (req: Request, res: Response) => {
       expiresIn: '1d',
     });
 
-    res.status(201).json({ message: 'New user created succesfully', token });
+    res.status(201).json({ message: 'New user created succesfully', token, User: savedUser });
   } catch (error) {
     console.error("Erreur du backend:", error);
     res.status(500).json({ message: 'Something went wrong' });
