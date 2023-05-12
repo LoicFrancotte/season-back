@@ -9,7 +9,6 @@ This project is the backend of a Twitter-like application, developed with Node.j
 ## Table of Contents
 
 - [Documentation](#documentation)
-- [Live Application](#live-application)
 - [Frontend Repository](#frontend-repository)
 - [Features](#features)
 - [Technologies](#technologies)
@@ -31,11 +30,6 @@ To test all the routes in the API, you need an access token. Follow these steps 
 5. You can now test all the routes in the API with your authorized token.
 
 Note: The access token may expire after a certain period of time. If that happens, you will need to log in again using the `/login` route to obtain a new token.
-
-## Live Application
-
-You can try the live application at the following address:
-[Live App!](https://season-ivory.vercel.app/)
 
 ## Frontend Repository
 
